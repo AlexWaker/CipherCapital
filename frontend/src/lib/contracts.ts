@@ -1,0 +1,165 @@
+import type { Address } from "viem";
+
+export const CONTRACTS = {
+  profile: process.env.NEXT_PUBLIC_PROFILE_CONTRACT as Address | undefined,
+  scoreEngine: process.env.NEXT_PUBLIC_SCORE_ENGINE_CONTRACT as Address | undefined,
+  loanVault: process.env.NEXT_PUBLIC_LOAN_VAULT_CONTRACT as Address | undefined,
+};
+
+export const profileAbi = [
+  {
+    type: "function",
+    name: "submitProfile",
+    stateMutability: "nonpayable",
+    inputs: [
+      { name: "encryptedAssets", type: "bytes32" },
+      { name: "encryptedLiabilities", type: "bytes32" },
+      { name: "encryptedMonthlyRevenue", type: "bytes32" },
+      { name: "encryptedMonthlyBurn", type: "bytes32" },
+      { name: "encryptedRepaymentCount", type: "bytes32" },
+      { name: "encryptedOverdueCount", type: "bytes32" },
+      { name: "inputProof", type: "bytes" },
+    ],
+    outputs: [],
+  },
+  {
+    type: "function",
+    name: "approvedAuditors",
+    stateMutability: "view",
+    inputs: [{ name: "auditor", type: "address" }],
+    outputs: [{ name: "approved", type: "bool" }],
+  },
+  {
+    type: "function",
+    name: "getProfile",
+    stateMutability: "view",
+    inputs: [{ name: "user", type: "address" }],
+    outputs: [
+      { name: "assets", type: "bytes32" },
+      { name: "liabilities", type: "bytes32" },
+      { name: "monthlyRevenue", type: "bytes32" },
+      { name: "monthlyBurn", type: "bytes32" },
+      { name: "repaymentCount", type: "bytes32" },
+      { name: "overdueCount", type: "bytes32" },
+      { name: "updatedAt", type: "uint64" },
+      { name: "version", type: "uint32" },
+      { name: "exists", type: "bool" },
+    ],
+  },
+  {
+    type: "function",
+    name: "getAttestation",
+    stateMutability: "view",
+    inputs: [{ name: "user", type: "address" }],
+    outputs: [
+      { name: "auditor", type: "address" },
+      { name: "profileVersion", type: "uint32" },
+      { name: "issuedAt", type: "uint64" },
+      { name: "expiresAt", type: "uint64" },
+      { name: "verificationTier", type: "uint8" },
+      { name: "evidenceHash", type: "bytes32" },
+      { name: "active", type: "bool" },
+      { name: "exists", type: "bool" },
+    ],
+  },
+  {
+    type: "function",
+    name: "submitAttestation",
+    stateMutability: "nonpayable",
+    inputs: [
+      { name: "verificationTier", type: "uint8" },
+      { name: "expiresAt", type: "uint64" },
+      { name: "evidenceHash", type: "bytes32" },
+      { name: "signature", type: "bytes" },
+    ],
+    outputs: [],
+  },
+  {
+    type: "function",
+    name: "refreshProtocolAccess",
+    stateMutability: "nonpayable",
+    inputs: [],
+    outputs: [],
+  },
+  {
+    type: "function",
+    name: "grantAuditorAccess",
+    stateMutability: "nonpayable",
+    inputs: [{ name: "auditor", type: "address" }],
+    outputs: [],
+  },
+] as const;
+
+export const scoreEngineAbi = [
+  {
+    type: "function",
+    name: "computeRiskProfile",
+    stateMutability: "nonpayable",
+    inputs: [{ name: "user", type: "address" }],
+    outputs: [
+      { name: "solvencyVerified", type: "bytes32" },
+      { name: "creditTier", type: "bytes32" },
+      { name: "maxCreditLine", type: "bytes32" },
+      { name: "reserveStatus", type: "bytes32" },
+      { name: "runwayTier", type: "bytes32" },
+      { name: "riskBand", type: "bytes32" },
+      { name: "auditorRequired", type: "bytes32" },
+      { name: "attestationActive", type: "bool" },
+    ],
+  },
+  {
+    type: "function",
+    name: "getLatestRiskProfile",
+    stateMutability: "view",
+    inputs: [{ name: "user", type: "address" }],
+    outputs: [
+      { name: "solvencyVerified", type: "bytes32" },
+      { name: "creditTier", type: "bytes32" },
+      { name: "maxCreditLine", type: "bytes32" },
+      { name: "reserveStatus", type: "bytes32" },
+      { name: "runwayTier", type: "bytes32" },
+      { name: "riskBand", type: "bytes32" },
+      { name: "auditorRequired", type: "bytes32" },
+      { name: "attestationActive", type: "bool" },
+      { name: "updatedAt", type: "uint64" },
+      { name: "exists", type: "bool" },
+    ],
+  },
+] as const;
+
+export const loanVaultAbi = [
+  {
+    type: "function",
+    name: "requestLoan",
+    stateMutability: "nonpayable",
+    inputs: [{ name: "requestedAmount", type: "uint64" }],
+    outputs: [],
+  },
+  {
+    type: "function",
+    name: "getLoanDecision",
+    stateMutability: "view",
+    inputs: [{ name: "user", type: "address" }],
+    outputs: [
+      { name: "approved", type: "bytes32" },
+      { name: "creditTier", type: "bytes32" },
+      { name: "maxCreditLine", type: "bytes32" },
+      { name: "issuedAmount", type: "bytes32" },
+      { name: "reserveStatus", type: "bytes32" },
+      { name: "runwayTier", type: "bytes32" },
+      { name: "riskBand", type: "bytes32" },
+      { name: "auditorRequired", type: "bytes32" },
+      { name: "attestationActive", type: "bool" },
+      { name: "requestedAmount", type: "uint64" },
+      { name: "updatedAt", type: "uint64" },
+      { name: "exists", type: "bool" },
+    ],
+  },
+  {
+    type: "function",
+    name: "repay",
+    stateMutability: "nonpayable",
+    inputs: [{ name: "amount", type: "uint64" }],
+    outputs: [],
+  },
+] as const;

@@ -1,0 +1,12 @@
+node_modules
+.next
+out
+artifacts
+cache
+typechain-types
+fhevmTemp
+.env
+.env.local
+coverage
+coverage.json
+*.log

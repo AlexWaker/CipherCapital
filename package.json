@@ -1,0 +1,10 @@
+{
+  "name": "ciphercapital",
+  "private": true,
+  "scripts": {
+    "compile": "npm --prefix contracts run compile",
+    "dev": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "lint": "npm --prefix frontend run lint"
+  }
+}
